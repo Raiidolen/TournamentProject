@@ -16,13 +16,12 @@ public class SingleEliminationStrategy : IBracketStrategy
         if (playerCount < 2)
             throw new InvalidOperationException("Un tournoi nécessite au moins 2 joueurs.");
 
-        // 1. Calcul des tours
         int totalRounds = (int)Math.Ceiling(Math.Log2(playerCount));
         int totalSlots = (int)Math.Pow(2, totalRounds);
 
         var roundMatchesMap = new Dictionary<int, List<Match>>();
 
-        // 2. Génération des matchs avec des GUIDs uniques
+        // 1. Instanciation des matchs
         for (int r = 1; r <= totalRounds; r++)
         {
             int matchesInRound = totalSlots / (int)Math.Pow(2, r);
@@ -32,29 +31,30 @@ public class SingleEliminationStrategy : IBracketStrategy
             {
                 var match = new Match
                 {
-                    Id = Guid.NewGuid(), // <-- Clé primaire unique obligatoire
+                    Id = Guid.NewGuid(),
                     TournamentId = tournament.Id,
                     RoundNumber = r,
                     MatchOrder = m,
-                    Status = MatchStatus.Pending
+                    Status = MatchStatus.Pending,
+                    NextMatchId = null,
+                    NextMatch = null // Ne pas assigner l'objet navigation
                 };
                 matches.Add(match);
                 roundMatchesMap[r].Add(match);
             }
         }
 
-        // 3. Chaînage des matchs (NextMatch & NextMatchId)
+        // 2. Lier uniquement par l'ID (NextMatchId)
         for (int r = 1; r < totalRounds; r++)
         {
             for (int m = 0; m < roundMatchesMap[r].Count; m++)
             {
                 var parentMatch = roundMatchesMap[r + 1][m / 2];
-                roundMatchesMap[r][m].NextMatch = parentMatch;
                 roundMatchesMap[r][m].NextMatchId = parentMatch.Id;
             }
         }
 
-        // 4. Placement des joueurs au Tour 1
+        // 3. Placement des joueurs au premier tour
         var round1Matches = roundMatchesMap[1];
         for (int i = 0; i < round1Matches.Count; i++)
         {
@@ -76,7 +76,7 @@ public class SingleEliminationStrategy : IBracketStrategy
             }
         }
 
-        // 5. Propagation des BYE
+        // 4. Propagation des Byes
         foreach (var byeMatch in round1Matches.Where(m => m.Status == MatchStatus.Completed))
         {
             AdvanceWinner(byeMatch, byeMatch.WinnerId!.Value, matches);
@@ -87,9 +87,9 @@ public class SingleEliminationStrategy : IBracketStrategy
 
     public void AdvanceWinner(Match currentMatch, Guid winnerId, List<Match> allMatches)
     {
-        if (currentMatch.NextMatch == null && currentMatch.NextMatchId == null) return;
+        if (currentMatch.NextMatchId == null) return;
 
-        var nextMatch = currentMatch.NextMatch ?? allMatches.FirstOrDefault(m => m.Id == currentMatch.NextMatchId);
+        var nextMatch = allMatches.FirstOrDefault(m => m.Id == currentMatch.NextMatchId);
         if (nextMatch == null) return;
 
         if (currentMatch.MatchOrder % 2 == 0)

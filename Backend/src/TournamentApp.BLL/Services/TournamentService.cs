@@ -21,7 +21,6 @@ public class TournamentService
 
     public async Task<Tournament> StartTournamentAsync(Guid tournamentId)
     {
-        // Chargement du tournoi AVEC ses joueurs via Include
         var tournament = await _context.Tournaments
             .Include(t => t.Players)
             .FirstOrDefaultAsync(t => t.Id == tournamentId);
@@ -36,7 +35,12 @@ public class TournamentService
         var matches = strategy.GenerateBracket(tournament, tournament.Players.ToList());
 
         tournament.Status = TournamentStatus.InProgress;
-        tournament.Matches = matches;
+
+        // Forcer explicitement le state 'Added' pour chaque nouveau match
+        foreach (var match in matches)
+        {
+            _context.Entry(match).State = EntityState.Added;
+        }
 
         await _context.SaveChangesAsync();
 
