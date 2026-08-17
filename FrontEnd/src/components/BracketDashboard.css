@@ -1,0 +1,171 @@
+/* Layout Principal TV */
+.tv-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow: hidden;
+  padding: 2rem;
+}
+
+/* En-tête haute visibilité pour projection */
+.tv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.tv-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.tv-title-area {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.tv-badge {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.tv-badge .code {
+  color: var(--accent-color);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* Indicateur d'état SignalR */
+.tv-status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.status-indicator.online {
+  background-color: var(--accent-winner);
+  box-shadow: 0 0 10px var(--accent-winner);
+}
+
+.status-indicator.offline {
+  background-color: #ef4444;
+}
+
+/* Arbre de Tournoi Horizontal */
+.tv-bracket-wrapper {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.tv-bracket-grid {
+  display: flex;
+  height: 100%;
+  gap: 3rem;
+  align-items: stretch;
+}
+
+.tv-round-column {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tv-round-title {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tv-matches-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex: 1;
+}
+
+/* Carte de Match haute lisibilité */
+.tv-match-card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.tv-match-card.status-inprogress {
+  border-color: var(--accent-color);
+}
+
+.tv-card-divider {
+  height: 1px;
+  background-color: var(--border-color);
+}
+
+.tv-player-slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.tv-player-slot.winner {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.tv-player-slot.winner .player-score {
+  color: var(--accent-winner);
+}
+
+.player-score {
+  font-weight: 800;
+  font-size: 1.2rem;
+  margin-left: 1rem;
+}
+
+/* Messages d'erreur et chargement */
+.tv-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.tv-message.error {
+  color: #ef4444;
+}
