@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TournamentApp.API/TournamentApp.API.csproj" />
+    <Project Path="src/TournamentApp.BLL/TournamentApp.BLL.csproj" />
+    <Project Path="src/TournamentApp.Core/TournamentApp.Core.csproj" />
+    <Project Path="src/TournamentApp.DAL/TournamentApp.DAL.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TournamentApp.Tests/TournamentApp.Tests.csproj" />
+  </Folder>
+</Solution>
